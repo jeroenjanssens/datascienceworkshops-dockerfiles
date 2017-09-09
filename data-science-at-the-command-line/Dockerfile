@@ -1,4 +1,4 @@
-# Data Science Toolbox
+# Data Science at the Command Line
 
 FROM alpine:3.5
 MAINTAINER Jeroen Janssens <jeroen@jeroenjanssens.com>
