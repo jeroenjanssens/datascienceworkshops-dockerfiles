@@ -1,7 +1,7 @@
 # Data Science at the Command Line
 
 FROM alpine:3.5
-MAINTAINER Jeroen Janssens <jeroen@jeroenjanssens.com>
+LABEL maintainer "Jeroen Janssens <jeroen@datascienceworkshops.com>"
 
 # RUN echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 
