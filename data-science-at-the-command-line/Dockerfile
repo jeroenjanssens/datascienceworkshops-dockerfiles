@@ -28,6 +28,7 @@ RUN apk --no-cache add \
     g++ \
     git \
     git-doc \
+    gnuplot \
     grep \
     grep-doc \
     groff \
@@ -45,8 +46,11 @@ RUN apk --no-cache add \
     p7zip-doc \
     parallel \
     parallel-doc \
+    perl-dev \
     py-lxml \
     py-pip \
+    python3 \
+    python3-dev \
     sed \
     sed-doc \
     sudo \
@@ -64,10 +68,6 @@ RUN apk --no-cache add \
 
 RUN echo "install.packages(c('ggplot2','dplyr','tidyr','ggmap'),repos='https://cloud.r-project.org')" | R --slave --no-save --no-restore-history
 
-RUN apk --no-cache add \
-    python3 \
-    python3-dev
-
 RUN easy_install-3.5 pip
 RUN pip install --upgrade pip
 
@@ -77,7 +77,6 @@ RUN pip install \
     csvkit \
     nose
 
- 
 RUN npm install -g \
     cowsay \
     json2csv \
@@ -92,11 +91,20 @@ RUN curl -sL http://bitbucket.org/eigen/eigen/get/3.2.9.tar.gz > /tmp/eigen.tar.
     mkdir eigen && tar -xzvf eigen.tar.gz -C eigen --strip-components=1 && \
     cd eigen && \
     mkdir build && cd build && cmake .. && make && make install
- 
+
 RUN cd /tmp && \
     git clone https://github.com/lisitsyn/tapkee.git && \
     cd tapkee && mkdir build && cd build && cmake .. && make && \
     cp -v /tmp/tapkee/bin/tapkee /usr/bin
+
+RUN yes | cpan List::MoreUtils && \
+    git clone https://github.com/dkogan/feedgnuplot.git && \
+    cd feedgnuplot && \
+    perl Makefile.PL && \
+    make && \
+    make install && \
+    cd .. && \
+    rm -r feedgnuplot
 
 RUN rm -rf /tmp/*
 RUN rm -rf /var/cache/apk/*
