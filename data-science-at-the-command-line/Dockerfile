@@ -3,8 +3,6 @@
 FROM alpine:3.5
 LABEL maintainer "Jeroen Janssens <jeroen@datascienceworkshops.com>"
 
-# RUN echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
-
 RUN apk update
 
 RUN apk --no-cache add \
@@ -29,6 +27,7 @@ RUN apk --no-cache add \
     git \
     git-doc \
     gnuplot \
+    go \
     grep \
     grep-doc \
     groff \
@@ -66,16 +65,17 @@ RUN apk --no-cache add \
     xmlstarlet \
     xmlstarlet-doc
 
-RUN echo "install.packages(c('ggplot2','dplyr','tidyr','ggmap'),repos='https://cloud.r-project.org')" | R --slave --no-save --no-restore-history
+RUN echo "install.packages(c('tidyverse','ggmap'),repos='https://cloud.r-project.org')" | R --slave --no-save --no-restore-history
 
-RUN easy_install-3.5 pip
-RUN pip install --upgrade pip
-
-RUN pip install \
+RUN easy_install-3.5 pip && \
+    pip install --upgrade pip && \
+    pip install \
     awscli \
-    cssselect \
     csvkit \
     nose
+
+RUN pip2 install --upgrade pip && \
+    pip2 install cssselect
 
 RUN npm install -g \
     cowsay \
@@ -106,12 +106,14 @@ RUN yes | cpan List::MoreUtils && \
     cd .. && \
     rm -r feedgnuplot
 
-RUN rm -rf /tmp/*
-RUN rm -rf /var/cache/apk/*
+RUN export GOPATH=/usr && \
+    go get github.com/ericchiang/pup
 
-RUN echo "export PAGER='less'" >>~/.bashrc
-RUN echo "alias l='ls -lph --group-directories-first'" >>~/.bashrc
-RUN echo "export PS1='\[\033[38;5;6m\][\w]$\[\033[38;5;15m\] '" >>~/.bashrc
+RUN rm -rf /tmp/* /var/cache/apk/*
+
+RUN echo "export PAGER='less'" >>~/.bashrc && \
+    echo "alias l='ls -lph --group-directories-first'" >>~/.bashrc && \
+    echo "export PS1='\[\033[38;5;6m\][\w]$\[\033[38;5;15m\] '" >>~/.bashrc
 
 WORKDIR /data
 CMD bash
