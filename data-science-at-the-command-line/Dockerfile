@@ -14,6 +14,7 @@ RUN apk --no-cache add \
     bash-doc \
     bc \
     bc-doc \
+    boost-dev \
     cmake \
     coreutils \
     coreutils-doc \
@@ -37,10 +38,12 @@ RUN apk --no-cache add \
     less \
     less-doc \
     libxml2-dev \
+    m4 \
     man \
     man-pages \
     mdocml-apropos \
     nodejs-lts \
+    nodejs-npm \
     openjdk7 \
     openssl \
     p7zip \
@@ -50,6 +53,8 @@ RUN apk --no-cache add \
     perl-dev \
     py-lxml \
     py-pip \
+    py3-scipy \
+    py3-nose \
     python3 \
     python3-dev \
     sed \
@@ -65,7 +70,8 @@ RUN apk --no-cache add \
     unzip \
     unzip-doc \
     xmlstarlet \
-    xmlstarlet-doc
+    xmlstarlet-doc \
+    zlib-dev
 
 RUN echo "install.packages(c('tidyverse','ggmap'),repos='https://cloud.r-project.org')" | R --slave --no-save --no-restore-history
 
@@ -74,17 +80,12 @@ RUN easy_install-3.6 pip && \
     pip3 install \
     awscli \
     bigmler \
-    csvkit \
-    nose \
-    numpy \
-    scipy
+    csvkit
 
 RUN pip3 install skll
 
 RUN pip2 install --upgrade pip && \
     pip2 install cssselect
-
-RUN apk --no-cache add nodejs-npm
 
 RUN npm install -g \
     cowsay \
@@ -160,23 +161,24 @@ RUN curl -L https://raw.githubusercontent.com/ninjudd/drip/master/bin/drip > /us
     chmod 755 /usr/bin/drip && \
     drip; exit 0
 
+
 # csvquote
 RUN cd /tmp && \
     git clone https://github.com/dbro/csvquote.git && \
     cd csvquote && \
     make && make BINDIR=/usr/bin/ install
 
+
 # vowpal wabbit
 RUN cd /tmp && \
-    apk --update add boost-dev zlib-dev && \
     git clone --depth 1 --branch master --single-branch git://github.com/JohnLangford/vowpal_wabbit.git && \
     cd vowpal_wabbit && \
     make && \
     make install
 
+
 # crush tools
 RUN cd /tmp && \
-    apk --update add m4 && \
     curl -L https://github.com/google/crush-tools/releases/download/20150716/crush-tools-20150716.tar.gz > crush-tools.tar.gz && \
     tar -xzvf crush-tools.tar.gz && \
     cd crush-tools-20150716/ && \
