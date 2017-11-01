@@ -53,8 +53,6 @@ RUN apk --no-cache add \
     perl-dev \
     py-lxml \
     py-pip \
-    py3-scipy \
-    py3-nose \
     python3 \
     python3-dev \
     sed \
@@ -80,7 +78,10 @@ RUN easy_install-3.6 pip && \
     pip3 install \
     awscli \
     bigmler \
-    csvkit
+    csvkit \
+    numpy \
+    scipy \
+    nose
 
 RUN pip3 install skll
 
