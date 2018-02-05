@@ -42,6 +42,7 @@ RUN apk --no-cache add \
     man \
     man-pages \
     mdocml-apropos \
+    ncurses \
     nodejs-lts \
     nodejs-npm \
     openjdk7 \
@@ -195,7 +196,7 @@ RUN echo "export PAGER='less'" >>~/.bashrc && \
     echo "export SHELL='/bin/bash'" >>~/.bashrc && \
     echo "alias l='ls -lph --group-directories-first'" >>~/.bashrc && \
     echo "alias parallel='parallel --will-cite'" >>~/.bashrc && \
-    echo "export PS1='\[\033[38;5;6m\][\w]$\[\033[38;5;15m\] '" >>~/.bashrc
+    echo 'export PS1="\[\033[38;5;6m\][\w]$\[$(tput sgr0)\] "' >>~/.bashrc
 
 RUN cat $(which weka) | sed -ne '/WEKAPATH=/,/complete /p' | cut -c3- | sed -e 's|/home/joe||' >>~/.bashrc
 
