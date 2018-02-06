@@ -91,7 +91,6 @@ RUN pip2 install --upgrade pip && \
 
 RUN npm install -g \
     cowsay \
-    json2csv \
     xml2json-command
 
 # data science at the command line tools
@@ -126,7 +125,8 @@ RUN yes | cpan List::MoreUtils && \
 
 # pup
 RUN export GOPATH=/usr && \
-    go get github.com/ericchiang/pup
+    go get github.com/ericchiang/pup && \
+    go get github.com/jehiah/json2csv
 
 
 # csvfix
