@@ -91,14 +91,15 @@ RUN pip2 install --upgrade pip && \
 
 RUN npm install -g \
     cowsay \
-    json2csv \
     xml2json-command
 
-# data science at the command line tools
+# data science at the command line tools, book content, and example data
 
 RUN cd /tmp && \
     git clone https://github.com/jeroenjanssens/data-science-at-the-command-line.git && \
-    cp -v data-science-at-the-command-line/tools/* /usr/bin/
+    cp -v data-science-at-the-command-line/tools/* /usr/bin/ && \
+    mkdir /home/data && cp -rv data-science-at-the-command-line/data/* /home/data && \
+    mkdir /home/book && cp -rv data-science-at-the-command-line/book/* /home/book
 
 
 # tapkee
@@ -126,7 +127,8 @@ RUN yes | cpan List::MoreUtils && \
 
 # pup
 RUN export GOPATH=/usr && \
-    go get github.com/ericchiang/pup
+    go get github.com/ericchiang/pup && \
+    go get github.com/jehiah/json2csv
 
 
 # csvfix
