@@ -10,4 +10,3 @@ RUN conda install -y altair rpy2 r-tidyverse
 RUN jupyter nbextension enable vega --py --sys-prefix
 
 USER $NB_USER
-
