@@ -1,6 +1,6 @@
 # Data Science at the Command Line
 
-FROM alpine:3.6
+FROM alpine:3.8
 LABEL maintainer "Jeroen Janssens <jeroen@datascienceworkshops.com>"
 
 RUN apk update
@@ -93,15 +93,6 @@ RUN npm install -g \
     cowsay \
     xml2json-command
 
-# data science at the command line tools, book content, and example data
-
-RUN cd /tmp && \
-    git clone https://github.com/jeroenjanssens/data-science-at-the-command-line.git && \
-    cp -v data-science-at-the-command-line/tools/* /usr/bin/ && \
-    mkdir /home/data && cp -rv data-science-at-the-command-line/data/* /home/data && \
-    mkdir /home/book && cp -rv data-science-at-the-command-line/book/* /home/book
-
-
 # tapkee
 RUN curl -sL http://bitbucket.org/eigen/eigen/get/3.2.9.tar.gz > /tmp/eigen.tar.gz && \
     cd \tmp && \
@@ -192,6 +183,14 @@ RUN cd /tmp && \
     make install
 
 
+# data science at the command line tools, book content, and example data
+RUN cd /tmp && \
+    git clone https://github.com/jeroenjanssens/data-science-at-the-command-line.git && \
+    cp -v data-science-at-the-command-line/tools/* /usr/bin/ && \
+    cp -rv data-science-at-the-command-line/data /home/ && \
+    cp -rv data-science-at-the-command-line/book /home/
+
+
 RUN rm -rf /tmp/* /var/cache/apk/*
 
 RUN echo "export PAGER='less'" >>~/.bashrc && \
@@ -204,4 +203,3 @@ RUN cat $(which weka) | sed -ne '/WEKAPATH=/,/complete /p' | cut -c3- | sed -e '
 
 WORKDIR /data
 CMD bash
-
