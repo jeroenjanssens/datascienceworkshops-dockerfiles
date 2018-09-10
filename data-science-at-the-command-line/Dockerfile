@@ -201,5 +201,9 @@ RUN echo "export PAGER='less'" >>~/.bashrc && \
 
 RUN cat $(which weka) | sed -ne '/WEKAPATH=/,/complete /p' | cut -c3- | sed -e 's|/home/joe||' >>~/.bashrc
 
+RUN apk --no-cache add msttcorefonts-installer fontconfig && \
+    update-ms-fonts && fc-cache -f
+RUN rm -rf /tmp/* /var/cache/apk/*
+
 WORKDIR /data
 CMD bash
